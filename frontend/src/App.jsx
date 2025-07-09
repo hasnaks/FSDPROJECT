@@ -12,6 +12,7 @@ import Shelters from './pages/Shelters';
 import Favorites from './pages/Favorites';
 import AdoptPage from './pages/AdoptPage';
 
+
 import ProtectedRoute from './components/ProtectedRoute';
 import { FavoritesProvider } from './context/FavoritesContext';
 

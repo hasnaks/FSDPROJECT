@@ -5,6 +5,8 @@ import {
   CardMedia, CardActions, Button, TextField, Paper, Snackbar, Alert, MenuItem
 } from '@mui/material';
 import axios from 'axios';
+import UploadForm from '../../components/UploadForm';
+
 
 const AdminDogsCats = () => {
   const [pets, setPets] = useState([]);
@@ -95,16 +97,23 @@ const AdminDogsCats = () => {
           {['name', 'breed', 'age', 'address', 'phone', 'image'].map((field) => (
             <Grid item xs={12} sm={6} key={field}>
               <TextField
-                label={field.charAt(0).toUpperCase() + field.slice(1)}
-                name={field}
-                value={form[field]}
-                onChange={handleChange}
-                fullWidth
-                required
+                 label={field.charAt(0).toUpperCase() + field.slice(1)}
+                    name={field}
+                    value={form[field]}
+                    onChange={handleChange}
+                    fullWidth
+                    required
               />
             </Grid>
           ))}
-          <Grid item xs={12} sm={6}>
+
+          <Grid item xs={12}>
+              <UploadForm
+                onUpload={(url) => setForm(prev => ({ ...prev, image: url }))}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
             <TextField
               select
               label="Type"
@@ -118,6 +127,16 @@ const AdminDogsCats = () => {
               <MenuItem value="Cat">Cat</MenuItem>
             </TextField>
           </Grid>
+
+            {form.image && (
+              <Grid item xs={12}>
+                <Typography variant="body2">Preview:</Typography>
+                <img src={form.image} alt="Uploaded Pet" style={{ width: '150px', borderRadius: '8px' }} />
+              </Grid>
+            )}
+
+
+          
           <Grid item xs={12}>
             <Button
               variant="contained"
