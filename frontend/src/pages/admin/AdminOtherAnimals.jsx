@@ -6,8 +6,6 @@ import {
 import axios from 'axios';
 import UploadForm from '../../components/UploadForm';
 
-
-
 const AdminOtherAnimals = () => {
   const [animals, setAnimals] = useState([]);
   const [form, setForm] = useState({
@@ -47,6 +45,7 @@ const AdminOtherAnimals = () => {
         await axios.post('http://localhost:3005/api/admin/otherpets/add', form);
         setSnackbar({ open: true, message: 'Animal added!', severity: 'success' });
       }
+
       setForm({ name: '', type: '', breed: '', age: '', address: '', phone: '', image: '' });
       setEditId(null);
       fetchAnimals();
@@ -88,7 +87,7 @@ const AdminOtherAnimals = () => {
   return (
     <Box sx={{ p: 4, bgcolor: '#f3e5f5', minHeight: '100vh' }}>
       <Typography variant="h4" align="center" gutterBottom sx={{ color: '#7e57c2', fontWeight: 'bold' }}>
-        Admin: Other Animals Management
+        🐾 Admin: Other Animals Management 🦜
       </Typography>
 
       {/* Form */}
@@ -97,29 +96,46 @@ const AdminOtherAnimals = () => {
           {editId ? 'Edit Animal' : 'Add New Animal'}
         </Typography>
         <Grid container spacing={2}>
-          {['name', 'type', 'breed', 'age', 'address', 'phone', 'image'].map((field) => (
-            <Grid item xs={12} sm={6} key={field}>
-              <TextField
-                 label={field.charAt(0).toUpperCase() + field.slice(1)}
-                      name={field}
-                      value={form[field]}
-                      onChange={handleChange}
-                      fullWidth
-                      required
-                  />
+          {/* Basic Info Fields */}
+          <Grid item xs={12} sm={6}>
+            <TextField label="Name" name="name" value={form.name} onChange={handleChange} fullWidth required />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField label="Type" name="type" value={form.type} onChange={handleChange} fullWidth required />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField label="Breed" name="breed" value={form.breed} onChange={handleChange} fullWidth required />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField label="Age" name="age" value={form.age} onChange={handleChange} fullWidth required />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField label="Phone" name="phone" value={form.phone} onChange={handleChange} fullWidth required />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField label="Address" name="address" value={form.address} onChange={handleChange} fullWidth required />
+          </Grid>
+
+          {/* Upload Form */}
+          <Grid item xs={12}>
+            <UploadForm onUpload={(url) => setForm(prev => ({ ...prev, image: url }))} />
+          </Grid>
+
+          {/* Image Preview */}
+          {form.image && (
+            <Grid item xs={12}>
+              <Typography variant="body2">Preview:</Typography>
+              <img src={form.image} alt="Uploaded Animal" style={{ width: '150px', borderRadius: '8px' }} />
             </Grid>
-          ))}
-        {/* UploadForm for Image */}
-              <Grid item xs={12}>
-                <UploadForm
-                  onUpload={(url) => setForm(prev => ({ ...prev, image: url }))}
-                />
-              </Grid>
+          )}
+
+          {/* Submit Button */}
           <Grid item xs={12}>
             <Button
               variant="contained"
               sx={{ bgcolor: '#7e57c2', '&:hover': { bgcolor: '#673ab7' } }}
               onClick={handleSubmit}
+              fullWidth
             >
               {editId ? 'Update Animal' : 'Add Animal'}
             </Button>
@@ -143,7 +159,7 @@ const AdminOtherAnimals = () => {
                 <Typography variant="body2">Address: {animal.address}</Typography>
                 <Typography variant="body2">Phone: {animal.phone}</Typography>
               </CardContent>
-              <CardActions>
+              <CardActions sx={{ justifyContent: 'space-between' }}>
                 <Button size="small" onClick={() => handleEdit(animal)}>Edit</Button>
                 <Button size="small" color="error" onClick={() => handleDelete(animal._id)}>Delete</Button>
               </CardActions>
