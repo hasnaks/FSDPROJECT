@@ -21,6 +21,7 @@ import AdminAdoptionMessages from './pages/admin/AdminAdoptionMessages';
 import AdminDogsCats from './pages/admin/AdminDogsCats';
 import AdminOtherAnimals from './pages/admin/AdminOtherAnimals';
 import AdminShelters from './pages/admin/AdminShelters';
+import Messages from './pages/Messages';
 
 function App() {
   useEffect(() => {
@@ -91,7 +92,7 @@ function App() {
             </ProtectedRoute>
           }
         />
-
+        <Route path="/messages" element={ <ProtectedRoute><Messages /></ProtectedRoute>} />
         {/* Admin Only Routes */}
         <Route
           path="/admin"

@@ -1,104 +1,83 @@
 import React, { useState } from 'react';
 import {
-  Box,
-  Typography,
-  TextField,
-  Button,
-  Paper,
+  Box, Typography, TextField, Button, Paper, Divider
 } from '@mui/material';
+import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 
 const AdoptPage = () => {
+  const location = useLocation();
+  const pet = location.state?.pet || {};
+
   const [form, setForm] = useState({
     fullName: '',
     email: '',
     phone: '',
     address: '',
     reason: '',
+    petId: pet._id || '',
+    petName: pet.name || '',
+    petType: pet.type || '',
+    petBreed: pet.breed || '',
   });
 
   const handleChange = (e) => {
-    setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:3005/api/adoption', form);
-      alert("Your adoption request has been submitted!");
-      setForm({ fullName: '', email: '', phone: '', address: '', reason: '' });
+      await axios.post('http://localhost:3005/api/adoption/apply', form); // ✅ Corrected route
+      alert("✅ Your adoption request has been submitted!");
+
+      setForm({
+        fullName: '',
+        email: '',
+        phone: '',
+        address: '',
+        reason: '',
+        petId: '',
+        petName: '',
+        petType: '',
+        petBreed: ''
+      });
     } catch (err) {
-      alert("Submission failed. Please try again.");
+      console.error("❌ Submission failed:", err);
+      alert("❌ Submission failed. Please try again.");
     }
   };
 
   return (
     <Box sx={{ p: 4, bgcolor: '#f3e5f5', minHeight: '100vh' }}>
-      <Paper elevation={3} sx={{ p: 4, maxWidth: 600, mx: 'auto', bgcolor: '#ffffff' }}>
-        <Typography variant="h4" align="center" gutterBottom sx={{ color: '#7e57c2' }}>
-          Adoption Form
+      <Paper elevation={3} sx={{ p: 4, maxWidth: 700, mx: 'auto', bgcolor: '#ffffff' }}>
+        <Typography variant="h4" align="center" gutterBottom sx={{ color: '#7e57c2', fontWeight: 'bold' }}>
+          🐾 Adoption Form
         </Typography>
 
+        {pet.name && (
+          <>
+            <Typography variant="h6" sx={{ mt: 2 }}>{pet.name}</Typography>
+            <Typography variant="body2">Breed: {pet.breed}</Typography>
+            <Typography variant="body2">Age: {pet.age}</Typography>
+            <Typography variant="body2">Type: {pet.type}</Typography>
+            <Divider sx={{ my: 2 }} />
+          </>
+        )}
+
         <form onSubmit={handleSubmit}>
-          <TextField
-            label="Full Name"
-            name="fullName"
-            value={form.fullName}
-            onChange={handleChange}
-            fullWidth
-            required
-            margin="normal"
-          />
-          <TextField
-            label="Email"
-            name="email"
-            value={form.email}
-            onChange={handleChange}
-            fullWidth
-            required
-            type="email"
-            margin="normal"
-          />
-          <TextField
-            label="Phone Number"
-            name="phone"
-            value={form.phone}
-            onChange={handleChange}
-            fullWidth
-            required
-            type="tel"
-            margin="normal"
-          />
-          <TextField
-            label="Address"
-            name="address"
-            value={form.address}
-            onChange={handleChange}
-            fullWidth
-            required
-            margin="normal"
-          />
-          <TextField
-            label="Why do you want to adopt?"
-            name="reason"
-            value={form.reason}
-            onChange={handleChange}
-            fullWidth
-            required
-            multiline
-            rows={4}
-            margin="normal"
-          />
+          <TextField fullWidth required label="Full Name" name="fullName" value={form.fullName} onChange={handleChange} margin="normal" />
+          <TextField fullWidth required label="Email Address" name="email" type="email" value={form.email} onChange={handleChange} margin="normal" />
+          <TextField fullWidth required label="Phone Number" name="phone" type="tel" value={form.phone} onChange={handleChange} margin="normal" />
+          <TextField fullWidth required label="Address" name="address" value={form.address} onChange={handleChange} margin="normal" />
+          <TextField fullWidth required label="Why do you want to adopt?" name="reason" multiline rows={4} value={form.reason} onChange={handleChange} margin="normal" />
 
           <Button
-            variant="contained"
             type="submit"
+            variant="contained"
             fullWidth
-            sx={{
-              mt: 3,
-              backgroundColor: '#7e57c2',
-              '&:hover': { backgroundColor: '#673ab7' },
-            }}
+            sx={{ mt: 3, bgcolor: '#7e57c2', '&:hover': { bgcolor: '#673ab7' } }}
           >
             Submit Application
           </Button>

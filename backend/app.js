@@ -9,7 +9,7 @@ const adminPetRoutes = require('./routes/adminPetRoutes');
 const adoptionRoutes = require("./routes/adoptionRoutes");
 const adminOtherPetRoutes = require('./routes/adminOtherPetRoutes');
 const adminShelterRoutes = require('./routes/adminShelterRoutes');
-
+const replyMessageRoutes = require('./routes/replyMessageRoutes');
 const app = express();
 const port = 3005;
 
@@ -25,6 +25,7 @@ app.use('/api/admin/pets', adminPetRoutes);
 app.use("/api/adoption", adoptionRoutes);
 app.use('/api/admin/otherpets', adminOtherPetRoutes);
 app.use('/api/admin/shelters', adminShelterRoutes);
+app.use('/api/replies', replyMessageRoutes);
 app.get("/", (req, res) => {
   res.send("Pet Adoption API is running...");
 });

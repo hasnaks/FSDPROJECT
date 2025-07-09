@@ -1,12 +1,20 @@
 const mongoose = require("mongoose");
 
-const adoptionRequestSchema = new mongoose.Schema({
-  fullName: { type: String, required: true },
-  email: { type: String, required: true },
-  phone: { type: String, required: true },
-  address: { type: String, required: true },
-  reason: { type: String, required: true },
-  createdAt: { type: Date, default: Date.now },
+const adoptionSchema = new mongoose.Schema({
+  fullName: String,
+  email: String,
+  phone: String,
+  address: String,
+  reason: String,
+  petId: String,
+  petName: String,
+  petType: String,
+  petBreed: String,
+   reply: String, 
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
 });
 
-module.exports = mongoose.model("AdoptionRequest", adoptionRequestSchema);
+module.exports = mongoose.model("AdoptionRequest", adoptionSchema);
