@@ -128,16 +128,9 @@ const AdminDogsCats = () => {
 
           {/* Image Upload */}
           <Grid item xs={12}>
-            <UploadForm onUpload={(url) => setForm(prev => ({ ...prev, image: url }))} />
+           <UploadForm onUpload={(url) => setForm(prev => ({  image: url }))} />
           </Grid>
 
-          {/* Image Preview */}
-          {form.image && (
-            <Grid item xs={12}>
-              <Typography variant="body2">Preview:</Typography>
-              <img src={form.image} alt="Uploaded Pet" style={{ width: '150px', borderRadius: '8px' }} />
-            </Grid>
-          )}
 
           {/* Submit Button */}
           <Grid item xs={12}>
@@ -161,8 +154,9 @@ const AdminDogsCats = () => {
             <Grid item xs={12} sm={6} md={3} key={pet._id}>
               <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
                 {pet.image && (
-                  <CardMedia component="img" height="180" image={pet.image} alt={pet.name} />
-                )}
+                        <CardMedia component="img" height="180" image={pet.image} alt={pet.name} />
+                      )}
+
                 <CardContent sx={{ flexGrow: 1 }}>
                   <Typography variant="h6">{pet.name}</Typography>
                   <Typography variant="body2">Type: {pet.type}</Typography>

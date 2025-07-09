@@ -1,58 +1,38 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 
-const UploadForm = () => {
-  const [image, setImage] = useState(null);
-  const [preview, setPreview] = useState(null);
+const UploadForm = ({ onUpload }) => {
+  const [preview, setPreview] = useState('');
   const [uploadedUrl, setUploadedUrl] = useState('');
 
-  const handleImageChange = (e) => {
+  const handleFileChange = async (e) => {
     const file = e.target.files[0];
-    if (file) {
-      setImage(file);
-      setPreview(URL.createObjectURL(file));
-    }
-  };
+    if (!file) return;
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!image) return alert('Please select an image.');
+   
 
+    // Prepare form data for Cloudinary
     const formData = new FormData();
-    formData.append('image', image);
+    formData.append('file', file);
+    formData.append('upload_preset', 'jahanas'); // from Cloudinary dashboard
 
     try {
-      const res = await axios.post('http://localhost:5000/upload', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
+      const res = await fetch('https://api.cloudinary.com/v1_1/dw9teb8dh/image/upload', {
+        method: 'POST',
+        body: formData,
       });
-      setUploadedUrl(res.data.imageUrl);
-    } catch (error) {
-      console.error(error);
-      alert('Upload failed. Make sure it’s an image file (png, jpg, jpeg, gif).');
+
+      const data = await res.json();
+      const imageUrl = data.secure_url;
+      onUpload(imageUrl); // 🔄 update form in parent component
+    } catch (err) {
+      console.error('Cloudinary upload failed:', err);
     }
   };
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <input type="file" accept="image/*" onChange={handleImageChange} />
-        <button type="submit">Upload</button>
-      </form>
+      <input type="file" accept="image/*" onChange={handleFileChange} />
 
-      {preview && (
-        <div>
-          <h4>Preview:</h4>
-          <img src={preview} alt="Preview" width="200" />
-        </div>
-      )}
-
-      {uploadedUrl && (
-        <div>
-          <h4>Uploaded Image:</h4>
-          <img src={uploadedUrl} alt="Uploaded" width="200" />
-          <p>URL: <a href={uploadedUrl} target="_blank" rel="noreferrer">{uploadedUrl}</a></p>
-        </div>
-      )}
     </div>
   );
 };
