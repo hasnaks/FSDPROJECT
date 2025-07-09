@@ -6,6 +6,7 @@ import {
   Button,
   Paper,
 } from '@mui/material';
+import axios from 'axios';
 
 const AdoptPage = () => {
   const [form, setForm] = useState({
@@ -20,11 +21,15 @@ const AdoptPage = () => {
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Adoption Request Submitted:", form);
-    alert("Your adoption request has been submitted!");
-    setForm({ fullName: '', email: '', phone: '', address: '', reason: '' });
+    try {
+      await axios.post('http://localhost:3005/api/adoption', form);
+      alert("Your adoption request has been submitted!");
+      setForm({ fullName: '', email: '', phone: '', address: '', reason: '' });
+    } catch (err) {
+      alert("Submission failed. Please try again.");
+    }
   };
 
   return (

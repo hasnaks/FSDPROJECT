@@ -9,6 +9,7 @@ import {
   Link,
 } from '@mui/material';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; // ✅ Import navigate hook
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -19,6 +20,7 @@ const SignUp = () => {
   });
 
   const [message, setMessage] = useState('');
+  const navigate = useNavigate(); // ✅ Initialize navigate
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -34,18 +36,19 @@ const SignUp = () => {
     }
 
     try {
-      const res = await axios.post('http://localhost:3005/api/users/register', {
+      await axios.post('http://localhost:3005/api/users/register', {
         name,
         email,
         password,
       });
 
-      setMessage(' Account created successfully!');
-      alert("Account created!");
-      // Optional: redirect or clear form
+      setMessage('Account created successfully!');
+      alert('Account created!');
+      navigate('/login'); // ✅ Redirect to login page
+
     } catch (err) {
-      console.error(" Signup failed:", err);
-      setMessage(err.response?.data?.message || "Signup error");
+      console.error('Signup failed:', err);
+      setMessage(err.response?.data?.message || 'Signup error');
     }
 
     setFormData({

@@ -2,12 +2,12 @@ const mongoose = require('mongoose');
 
 const petSchema = new mongoose.Schema({
   name: String,
-  type: String,
   breed: String,
-  age: Number,
+  age: String,
   address: String,
-  image: String,
   phone: String,
+  image: String,
+  type: { type: String, required: true } // Required!
 });
 
-module.exports = mongoose.model('Pet', petSchema);
+module.exports = mongoose.models.Pet || mongoose.model('Pet', petSchema);

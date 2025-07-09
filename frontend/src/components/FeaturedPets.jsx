@@ -9,7 +9,6 @@ import {
   Box,
 } from '@mui/material';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import { useNavigate } from 'react-router-dom';
 
 const pets = [
   {
@@ -35,12 +34,6 @@ const pets = [
 ];
 
 export default function FeaturedPets() {
-  const navigate = useNavigate();
-
-  const handleLikeClick = () => {
-    navigate('/signup');
-  };
-
   return (
     <Box sx={{ mt: 6, px: 2 }}>
       <Typography
@@ -63,7 +56,7 @@ export default function FeaturedPets() {
                 position: 'relative',
               }}
             >
-              {/* Like Button */}
+              {/* Like Button - no action */}
               <IconButton
                 sx={{
                   position: 'absolute',
@@ -72,7 +65,6 @@ export default function FeaturedPets() {
                   backgroundColor: 'rgba(255,255,255,0.9)',
                   zIndex: 2,
                 }}
-                onClick={handleLikeClick}
               >
                 <FavoriteBorderIcon color="error" />
               </IconButton>

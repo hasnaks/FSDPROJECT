@@ -1,14 +1,15 @@
-// models/otherpet.js
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const otherPetSchema = new mongoose.Schema({
-  name: String,
-  type: String,
-  breed: String,
-  age: Number,
-  address: String,
-  image: String,
-  phone: String
+  name: { type: String, required: true },
+  type: { type: String, required: true }, // Bird, Rabbit, etc.
+  breed: { type: String, required: true },
+  age: { type: Number, required: true },
+  address: { type: String, required: true },
+  phone: { type: String, required: true },
+  image: { type: String, required: true },
 });
 
-module.exports = mongoose.model('OtherPet', otherPetSchema);
+module.exports = mongoose.models.OtherPet || mongoose.model("OtherPet", otherPetSchema);
+
+
