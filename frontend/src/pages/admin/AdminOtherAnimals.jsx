@@ -4,6 +4,9 @@ import {
   CardActions, Button, TextField, Paper, Snackbar, Alert
 } from '@mui/material';
 import axios from 'axios';
+import UploadForm from '../../components/UploadForm';
+
+
 
 const AdminOtherAnimals = () => {
   const [animals, setAnimals] = useState([]);
@@ -97,15 +100,21 @@ const AdminOtherAnimals = () => {
           {['name', 'type', 'breed', 'age', 'address', 'phone', 'image'].map((field) => (
             <Grid item xs={12} sm={6} key={field}>
               <TextField
-                label={field.charAt(0).toUpperCase() + field.slice(1)}
-                name={field}
-                value={form[field]}
-                onChange={handleChange}
-                fullWidth
-                required={['name', 'type', 'breed', 'age', 'address', 'phone'].includes(field)}
-              />
+                 label={field.charAt(0).toUpperCase() + field.slice(1)}
+                      name={field}
+                      value={form[field]}
+                      onChange={handleChange}
+                      fullWidth
+                      required
+                  />
             </Grid>
           ))}
+        {/* UploadForm for Image */}
+              <Grid item xs={12}>
+                <UploadForm
+                  onUpload={(url) => setForm(prev => ({ ...prev, image: url }))}
+                />
+              </Grid>
           <Grid item xs={12}>
             <Button
               variant="contained"
