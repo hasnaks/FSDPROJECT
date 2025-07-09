@@ -118,16 +118,10 @@ const AdminOtherAnimals = () => {
 
           {/* Upload Form */}
           <Grid item xs={12}>
-            <UploadForm onUpload={(url) => setForm(prev => ({ ...prev, image: url }))} />
+            <UploadForm onUpload={(url) => setForm(prev => ({  image: url }))} />
           </Grid>
 
-          {/* Image Preview */}
-          {form.image && (
-            <Grid item xs={12}>
-              <Typography variant="body2">Preview:</Typography>
-              <img src={form.image} alt="Uploaded Animal" style={{ width: '150px', borderRadius: '8px' }} />
-            </Grid>
-          )}
+      
 
           {/* Submit Button */}
           <Grid item xs={12}>
@@ -150,6 +144,7 @@ const AdminOtherAnimals = () => {
             <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
               {animal.image && (
                 <CardMedia component="img" height="180" image={animal.image} alt={animal.name} />
+
               )}
               <CardContent sx={{ flexGrow: 1 }}>
                 <Typography variant="h6">{animal.name}</Typography>
@@ -167,6 +162,8 @@ const AdminOtherAnimals = () => {
           </Grid>
         ))}
       </Grid>
+
+     
 
       {/* Snackbar */}
       <Snackbar
