@@ -1,12 +1,11 @@
-// AdminDogsCats.jsx
 import React, { useEffect, useState } from 'react';
 import {
   Box, Typography, Grid, Card, CardContent,
-  CardMedia, CardActions, Button, TextField, Paper, Snackbar, Alert, MenuItem
+  CardMedia, CardActions, Button, TextField, Paper,
+  Snackbar, Alert, MenuItem
 } from '@mui/material';
 import axios from 'axios';
 import UploadForm from '../../components/UploadForm';
-
 
 const AdminDogsCats = () => {
   const [pets, setPets] = useState([]);
@@ -87,33 +86,32 @@ const AdminDogsCats = () => {
   return (
     <Box sx={{ p: 4, bgcolor: '#f3e5f5', minHeight: '100vh' }}>
       <Typography variant="h4" align="center" gutterBottom sx={{ color: '#7e57c2', fontWeight: 'bold' }}>
-        Admin: Dogs & Cats Management
+        🐶 Admin: Dogs & Cats Management 🐱
       </Typography>
 
-      {/* Add/Edit Form */}
+      {/* Form */}
       <Paper sx={{ p: 3, maxWidth: 800, mx: 'auto', mb: 5 }}>
         <Typography variant="h6" gutterBottom>{editId ? 'Edit Pet Details' : 'Add New Dog or Cat'}</Typography>
         <Grid container spacing={2}>
-          {['name', 'breed', 'age', 'address', 'phone', 'image'].map((field) => (
-            <Grid item xs={12} sm={6} key={field}>
-              <TextField
-                 label={field.charAt(0).toUpperCase() + field.slice(1)}
-                    name={field}
-                    value={form[field]}
-                    onChange={handleChange}
-                    fullWidth
-                    required
-              />
-            </Grid>
-          ))}
+          {/* Basic Info */}
+          <Grid item xs={12} sm={6}>
+            <TextField label="Name" name="name" value={form.name} onChange={handleChange} fullWidth required />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField label="Breed" name="breed" value={form.breed} onChange={handleChange} fullWidth required />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField label="Age" name="age" value={form.age} onChange={handleChange} fullWidth required />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField label="Phone" name="phone" value={form.phone} onChange={handleChange} fullWidth required />
+          </Grid>
 
+          {/* Address and Type */}
           <Grid item xs={12}>
-              <UploadForm
-                onUpload={(url) => setForm(prev => ({ ...prev, image: url }))}
-              />
-            </Grid>
-
-            <Grid item xs={12} sm={6}>
+            <TextField label="Address" name="address" value={form.address} onChange={handleChange} fullWidth required />
+          </Grid>
+          <Grid item xs={12} sm={6}>
             <TextField
               select
               label="Type"
@@ -128,20 +126,26 @@ const AdminDogsCats = () => {
             </TextField>
           </Grid>
 
-            {form.image && (
-              <Grid item xs={12}>
-                <Typography variant="body2">Preview:</Typography>
-                <img src={form.image} alt="Uploaded Pet" style={{ width: '150px', borderRadius: '8px' }} />
-              </Grid>
-            )}
+          {/* Image Upload */}
+          <Grid item xs={12}>
+            <UploadForm onUpload={(url) => setForm(prev => ({ ...prev, image: url }))} />
+          </Grid>
 
+          {/* Image Preview */}
+          {form.image && (
+            <Grid item xs={12}>
+              <Typography variant="body2">Preview:</Typography>
+              <img src={form.image} alt="Uploaded Pet" style={{ width: '150px', borderRadius: '8px' }} />
+            </Grid>
+          )}
 
-          
+          {/* Submit Button */}
           <Grid item xs={12}>
             <Button
               variant="contained"
               sx={{ bgcolor: '#7e57c2', '&:hover': { bgcolor: '#673ab7' } }}
               onClick={handleSubmit}
+              fullWidth
             >
               {editId ? 'Update Pet' : 'Add Pet'}
             </Button>
@@ -149,14 +153,16 @@ const AdminDogsCats = () => {
         </Grid>
       </Paper>
 
-      {/* Pet Cards */}
+      {/* Display Cards */}
       <Grid container spacing={3}>
         {pets
           .filter(p => p.type === 'Dog' || p.type === 'Cat')
           .map((pet) => (
             <Grid item xs={12} sm={6} md={3} key={pet._id}>
               <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-                <CardMedia component="img" height="180" image={pet.image} alt={pet.name} />
+                {pet.image && (
+                  <CardMedia component="img" height="180" image={pet.image} alt={pet.name} />
+                )}
                 <CardContent sx={{ flexGrow: 1 }}>
                   <Typography variant="h6">{pet.name}</Typography>
                   <Typography variant="body2">Type: {pet.type}</Typography>
@@ -166,7 +172,7 @@ const AdminDogsCats = () => {
                   <Typography variant="body2">Phone: {pet.phone}</Typography>
                 </CardContent>
                 <CardActions sx={{ justifyContent: 'space-between' }}>
-                  <Button size="small" color="primary" onClick={() => handleEdit(pet)}>Edit</Button>
+                  <Button size="small" onClick={() => handleEdit(pet)}>Edit</Button>
                   <Button size="small" color="error" onClick={() => handleDelete(pet._id)}>Delete</Button>
                 </CardActions>
               </Card>
