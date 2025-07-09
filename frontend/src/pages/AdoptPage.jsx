@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box, Typography, TextField, Button, Paper, Divider
 } from '@mui/material';
@@ -21,20 +21,27 @@ const AdoptPage = () => {
     petBreed: pet.breed || '',
   });
 
+  // ⬇️ Get user email from localStorage on mount
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user?.email) {
+      setForm(prev => ({ ...prev, email: user.email }));
+    }
+  }, []);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+    setForm(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:3005/api/adoption/apply', form); // ✅ Corrected route
+      await axios.post('http://localhost:3005/api/adoption/apply', form);
       alert("✅ Your adoption request has been submitted!");
-
       setForm({
         fullName: '',
-        email: '',
+        email: form.email, // retain auto-filled email
         phone: '',
         address: '',
         reason: '',
@@ -66,9 +73,22 @@ const AdoptPage = () => {
           </>
         )}
 
+        {/* ✅ Instruction message */}
+        <Typography variant="caption" sx={{ color: '#888', display: 'block', mb: 2 }}>
+          ⚠️ Your email has been auto-filled. The admin will use it to reply.
+        </Typography>
+
         <form onSubmit={handleSubmit}>
           <TextField fullWidth required label="Full Name" name="fullName" value={form.fullName} onChange={handleChange} margin="normal" />
-          <TextField fullWidth required label="Email Address" name="email" type="email" value={form.email} onChange={handleChange} margin="normal" />
+          <TextField
+            fullWidth
+            required
+            label="Email Address"
+            name="email"
+            value={form.email}
+            disabled
+            margin="normal"
+          />
           <TextField fullWidth required label="Phone Number" name="phone" type="tel" value={form.phone} onChange={handleChange} margin="normal" />
           <TextField fullWidth required label="Address" name="address" value={form.address} onChange={handleChange} margin="normal" />
           <TextField fullWidth required label="Why do you want to adopt?" name="reason" multiline rows={4} value={form.reason} onChange={handleChange} margin="normal" />

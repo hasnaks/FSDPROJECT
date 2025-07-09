@@ -54,25 +54,24 @@ const AdminAdoptionMessages = () => {
     setReplyText((prev) => ({ ...prev, [id]: value }));
   };
 
-  
+  const handleSendReply = async (id, userEmail) => {
+    try {
+      await axios.post('http://localhost:3005/api/replies/send', {
+        userEmail,
+        requestId: id,
+        message: replyText[id],
+      });
+      alert("Reply sent!");
+      setReplyText(prev => ({ ...prev, [id]: '' }));
+    } catch (err) {
+      alert("Reply failed.");
+      console.error(err);
+    }
+  };
+
   const handleCloseSnackbar = () => {
     setSnackbar(prev => ({ ...prev, open: false }));
   };
-  const handleSendReply = async (id, userEmail) => {
-  try {
-    await axios.post('http://localhost:3005/api/replies/send', {
-      userEmail,
-      requestId: id,
-      message: replyText[id],
-    });
-    alert("Reply sent!");
-    setReplyText(prev => ({ ...prev, [id]: '' }));
-  } catch (err) {
-    alert("Reply failed.");
-    console.error(err);
-  }
-};
-
 
   return (
     <Box sx={{ p: 4, minHeight: '100vh', bgcolor: '#f3e5f5' }}>
@@ -127,6 +126,11 @@ const AdminAdoptionMessages = () => {
                     🐶 Pet: <strong>{req.petName}</strong> ({req.petType}, {req.petBreed})
                   </Typography>
 
+                  {/* ✅ Instruction message for admin */}
+                  <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
+                    ⚠️ Make sure this email (<strong>{req.email}</strong>) matches the user's login email. The reply will be sent to that email.
+                  </Typography>
+
                   <TextField
                     fullWidth
                     size="small"
@@ -137,14 +141,13 @@ const AdminAdoptionMessages = () => {
                     sx={{ mt: 2 }}
                   />
                   <Button
-                  size="small"
-                  variant="contained"
-                  sx={{ mt: 1, backgroundColor: '#7e57c2', '&:hover': { backgroundColor: '#673ab7' } }}
-                  onClick={() => handleSendReply(req._id, req.email)}
-                >
-                  Send Reply
-                </Button>
-
+                    size="small"
+                    variant="contained"
+                    sx={{ mt: 1, backgroundColor: '#7e57c2', '&:hover': { backgroundColor: '#673ab7' } }}
+                    onClick={() => handleSendReply(req._id, req.email)}
+                  >
+                    Send Reply
+                  </Button>
                 </Box>
               </ListItem>
             ))}
