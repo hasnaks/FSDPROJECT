@@ -102,10 +102,13 @@ const Navbar = () => {
                   <ListItemIcon><FavoriteIcon /></ListItemIcon>
                   <ListItemText primary="Favorites" />
                 </ListItem>
-                <ListItem button component={Link} to="/messages">
-                  <ListItemIcon><MessageIcon /></ListItemIcon>
-                  <ListItemText primary="Messages" />
-                </ListItem>
+                {!isAdmin && (
+  <ListItem button component={Link} to="/messages">
+    <ListItemIcon><MessageIcon /></ListItemIcon>
+    <ListItemText primary="Messages" />
+  </ListItem>
+)}
+
               </List>
             </Box>
           </Drawer>
@@ -139,11 +142,13 @@ const Navbar = () => {
                 <FavoriteIcon />
               </IconButton>
             </Tooltip>
-            <Tooltip title="Messages">
-              <IconButton component={Link} to="/messages" color="inherit">
-                <MessageIcon />
-              </IconButton>
-            </Tooltip>
+            {!isAdmin && (
+  <Tooltip title="Messages">
+    <IconButton component={Link} to="/messages" color="inherit">
+      <MessageIcon />
+    </IconButton>
+  </Tooltip>
+)}
             {isAdmin && (
               <Tooltip title="Admin Dashboard">
                 <IconButton component={Link} to="/admin" color="inherit">
