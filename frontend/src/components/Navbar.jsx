@@ -1,3 +1,4 @@
+import { Avatar } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import {
@@ -166,8 +167,11 @@ const Navbar = () => {
               </Typography>
             )}
             <IconButton size="large" color="inherit" onClick={handleMenu}>
-              <ProfileIcon />
-            </IconButton>
+  <Avatar sx={{ bgcolor: '#fff', color: '#7e57c2', fontWeight: 'bold', width: 32, height: 32, fontSize: 16 }}>
+    {userName ? userName.charAt(0).toUpperCase() : ''}
+  </Avatar>
+</IconButton>
+
           </Box>
 
           {/* Dropdown Menu */}
