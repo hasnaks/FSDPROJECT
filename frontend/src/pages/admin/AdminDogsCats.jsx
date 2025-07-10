@@ -123,13 +123,14 @@ const AdminDogsCats = () => {
             >
               <MenuItem value="Dog">Dog</MenuItem>
               <MenuItem value="Cat">Cat</MenuItem>
-            </TextField>
-          </Grid>
+            </TextField> <br /> <br />
+          </Grid>  <br /><br />
 
           {/* Image Upload */}
           <Grid item xs={12}>
-           <UploadForm onUpload={(url) => setForm(prev => ({  image: url }))} />
-          </Grid>
+           <UploadForm onUpload={(url) => setForm(prev => ({ ...prev, image: url }))} />
+
+          </Grid> <br /><br />
 
 
           {/* Submit Button */}

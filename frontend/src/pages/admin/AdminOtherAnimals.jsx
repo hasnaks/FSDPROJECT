@@ -118,7 +118,7 @@ const AdminOtherAnimals = () => {
 
           {/* Upload Form */}
           <Grid item xs={12}>
-            <UploadForm onUpload={(url) => setForm(prev => ({  image: url }))} />
+            <UploadForm onUpload={(url) => setForm(prev => ({...prev,image: url }))} />
           </Grid>
 
       
