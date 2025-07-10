@@ -23,6 +23,7 @@ import PetsIcon from '@mui/icons-material/Pets';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import MessageIcon from '@mui/icons-material/Message'; // ✅ added
+import ProfileIcon from "./ProfileIcon";
 
 const Navbar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -160,7 +161,7 @@ const Navbar = () => {
               </Typography>
             )}
             <IconButton size="large" color="inherit" onClick={handleMenu}>
-              <AccountCircle />
+              <ProfileIcon />
             </IconButton>
           </Box>
 
